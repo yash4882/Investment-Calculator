@@ -1,0 +1,51 @@
+<div class="relative overflow-x-auto">
+  <table class="w-full text-md text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        <th scope="col" class="px-6 py-3">Bank Account</th>
+        <th scope="col" class="px-6 py-3">Balance</th>
+        <th scope="col" class="px-6 py-3">Enforcing min balance?</th>
+        <th scope="col" class="px-6 py-3">Min balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @accounts.each do |account| %>
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            Account: <%= account.id %>
+          </th>
+          <td class="px-6 py-4"><%= account.balance %></td>
+          <td class="px-6 py-4"><%= account.min_balance_enforced %></td>
+          <td class="px-6 py-4"><%= account.min_balance.nil? ? "nil" : account.min_balance %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="container mx-auto mt-10 p-6 max-w-md bg-white shadow-lg rounded-lg">
+  <h1 class="text-xl font-bold text-center mb-4">Investment Calculator</h1>
+  
+  <%= form_with url: "/investment", method: "post", local: true, data: { turbo: false }, class: "space-y-4" do |form| %>
+    <div>
+      <label class="block mb-2 font-medium">Enter Investment Amount:</label>
+      <%= form.text_field :amount, class: "w-full border p-2 rounded" %>
+    </div>
+    <%= form.submit "Submit", class: "w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600" %>
+    <%= link_to "Refresh", root_path, class: "bg-blue-500 text-white p-2 rounded hover:bg-blue-600" %>
+  <% end %>
+
+  <% if @amount %>
+    <div class="mt-6 p-4 bg-gray-100 rounded">
+      <h2 class="font-bold mb-2">Investment Results:</h2>
+      <% if @no_match %>
+        <p class="text-red-500 font-bold">NO MATCH</p>
+      <% else %>
+        <% @adjustments.each do |adjustment| %>
+          <p>Account <%= adjustment[:account].id %>: - <%= adjustment[:amount] %></p>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+
