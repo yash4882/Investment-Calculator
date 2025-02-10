@@ -13,7 +13,7 @@ Things you may want to cover:
 
 * Configure database.yml username, password, host: localhost
 
-* Database Create - Run rails db:create 
+* Database Create - Run rails db:create, rails db:migrate, rails db:seed
 
 * For CSS build Run - rails assets:precompile
 
